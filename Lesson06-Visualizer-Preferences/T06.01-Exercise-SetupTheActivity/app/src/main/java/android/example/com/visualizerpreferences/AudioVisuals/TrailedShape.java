@@ -19,7 +19,6 @@ package android.example.com.visualizerpreferences.AudioVisuals;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.support.annotation.ColorInt;
 
 import java.util.LinkedList;
 
@@ -162,7 +161,7 @@ abstract class TrailedShape {
      *
      * @param color Color to set this shape to
      */
-    void setShapeColor(@ColorInt int color) {
+    void setShapeColor(int color) {
         mPaint.setColor(color);
     }
 
@@ -171,7 +170,7 @@ abstract class TrailedShape {
      *
      * @param color Color to set this trail to
      */
-    void setTrailColor(@ColorInt int color) {
+    void setTrailColor(int color) {
         mTrailPaint.setColor(color);
     }
 

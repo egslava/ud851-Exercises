@@ -17,24 +17,47 @@ package android.example.com.visualizerpreferences;
  */
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.EditTextPreference;
-import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceScreen;
-import android.widget.Toast;
+import android.support.v7.preference.PreferenceManager;
 
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private SharedPreferences sharedPreferences;
+    private String DEFAULT_COLOR;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-
         // Add visualizer preferences, defined in the XML file in res->xml->pref_visualizer
         addPreferencesFromResource(R.xml.pref_visualizer);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        // initializing consts
+        DEFAULT_COLOR = getString(R.string.pref_colors_default_value);
+        refreshColorPreferenceList(sharedPreferences, getString(R.string.pref_colors_key));
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        refreshColorPreferenceList(sharedPreferences, key);
+    }
+
+    private void refreshColorPreferenceList(SharedPreferences sharedPreferences, String key) {
+        if (key != null && key.equals(getString(R.string.pref_colors_key))){
+            final String colorValue = sharedPreferences.getString(key, DEFAULT_COLOR);
+            final Preference preferenceList = getPreferenceScreen().findPreference(key);
+            preferenceList.setSummary(colorValue);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        sharedPreferences = null;
+        super.onDestroy();
+    }
 }

@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.example.com.visualizerpreferences.AudioVisuals.AudioInputReader;
 import android.example.com.visualizerpreferences.AudioVisuals.VisualizerView;
+import android.example.com.visualizerpreferences.settings.SettingsActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;

@@ -4,20 +4,65 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
+        resConfigs "en", "fr"
+
         applicationId "android.example.com.visualizerpreferences"
-        minSdkVersion 10
+        minSdkVersion 25
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    splits {
+        density {
+            enable true
+            exclude 'ldpi', 'tvdpi', 'xxxhdpi'
+//alternatively use the following two lines to only include:
+//            reset()
+//            include 'mdpi', 'hdpi', 'xhdpi', 'xxhdpi'
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+        }
+
+        abi {
+            enable true
+            reset()
+            include 'x86', 'armeabi-v7a', 'mips'
+            universalApk false
+        }
+    }
+
+//    productFlavors {
+//        xxhdpi {
+//            resConfigs "xxhdpi"
+//            versionCode 400001
+//        }
+//        xhdpi {
+//            resConfigs "xhdpi"
+//            versionCode 300001
+//        }
+//        hdpi {
+//            resConfigs "hdpi"
+//            versionCode 200001
+//        }
+//        mdpi {
+//            resConfigs "mdpi"
+//            versionCode 100001
+//        }
+//        anydpi {
+//            versionCode 1
+//        }
+//    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    provided 'org.jetbrains:annotations:15.0'
 }

@@ -29,5 +29,11 @@
         android:entryValues="@array/pref_color_option_values"
         android:key="@string/pref_color_key"
         android:title="@string/pref_color_label" />
+    <EditTextPreference
+        android:defaultValue="@string/pref_size_default_value"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_size_label"
+        android:key="@string/pref_size_key" />
 
 </PreferenceScreen>

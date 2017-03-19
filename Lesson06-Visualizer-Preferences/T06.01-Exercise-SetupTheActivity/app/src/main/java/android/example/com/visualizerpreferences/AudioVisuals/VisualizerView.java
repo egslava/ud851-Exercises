@@ -22,8 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.SystemClock;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -77,7 +75,6 @@ public class VisualizerView extends View {
     private boolean showMid;
     private boolean showTreble;
 
-    @ColorInt
     private int backgroundColor;
 
     public VisualizerView(Context context, AttributeSet attrs) {
@@ -269,24 +266,22 @@ public class VisualizerView extends View {
      */
     public void setColor(String newColorKey) {
 
-        @ColorInt
         int shapeColor;
 
-        @ColorInt
         int trailColor;
 
         if (newColorKey.equals(getContext().getString(R.string.pref_color_blue_value))) {
-            shapeColor = ContextCompat.getColor(getContext(), R.color.shapeBlue);
-            trailColor = ContextCompat.getColor(getContext(), R.color.trailBlue);
-            backgroundColor = ContextCompat.getColor(getContext(), R.color.backgroundBlue);
+            shapeColor = getContext().getResources().getColor(R.color.shapeBlue);
+            trailColor = getContext().getResources().getColor(R.color.trailBlue);
+            backgroundColor = getContext().getResources().getColor(R.color.backgroundBlue);
         } else if (newColorKey.equals(getContext().getString(R.string.pref_color_green_value))) {
-            shapeColor = ContextCompat.getColor(getContext(), R.color.shapeGreen);
-            trailColor = ContextCompat.getColor(getContext(), R.color.trailGreen);
-            backgroundColor = ContextCompat.getColor(getContext(), R.color.backgroundGreen);
+            shapeColor = getContext().getResources().getColor(R.color.shapeGreen);
+            trailColor = getContext().getResources().getColor(R.color.trailGreen);
+            backgroundColor = getContext().getResources().getColor(R.color.backgroundGreen);
         } else {
-            shapeColor = ContextCompat.getColor(getContext(), R.color.shapeRed);
-            trailColor = ContextCompat.getColor(getContext(), R.color.trailRed);
-            backgroundColor = ContextCompat.getColor(getContext(), R.color.backgroundRed);
+            shapeColor = getContext().getResources().getColor(R.color.shapeRed);
+            trailColor = getContext().getResources().getColor(R.color.trailRed);
+            backgroundColor = getContext().getResources().getColor(R.color.backgroundRed);
         }
 
         mBassCircle.setShapeColor(shapeColor);

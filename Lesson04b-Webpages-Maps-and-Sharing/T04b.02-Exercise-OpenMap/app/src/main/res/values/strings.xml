@@ -15,4 +15,5 @@
 -->
 <resources>
     <string name="app_name">Implicit Intents</string>
+    <string name="error_maps_not_found">Maps Activity is not found</string>
 </resources>

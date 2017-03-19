@@ -16,10 +16,14 @@
 
 package com.udacity.example.quizexample;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.udacity.example.droidtermsprovider.DroidTermsExampleContract;
 
 /**
  * Gets the data from the ContentProvider and shows a series of flash cards.
@@ -49,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the views
         mButton = (Button) findViewById(R.id.button_next);
+
+        final ContentResolver contentResolver = getContentResolver();
+        final Cursor query = contentResolver.query(DroidTermsExampleContract.CONTENT_URI, null, null, null, null);
     }
 
     /**

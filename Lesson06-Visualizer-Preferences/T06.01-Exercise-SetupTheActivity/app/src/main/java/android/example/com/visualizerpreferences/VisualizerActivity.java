@@ -16,18 +16,20 @@ package android.example.com.visualizerpreferences;
  * limitations under the License.
  */
 
-import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.example.com.visualizerpreferences.AudioVisuals.AudioInputReader;
 import android.example.com.visualizerpreferences.AudioVisuals.VisualizerView;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-public class VisualizerActivity extends AppCompatActivity {
+//import android.support.annotation.NonNull;
+//import android.support.v4.app.ActivityCompat;
+
+public class VisualizerActivity extends Activity {
 
     private static final int MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE = 88;
     private VisualizerView mVisualizerView;
@@ -79,22 +81,22 @@ public class VisualizerActivity extends AppCompatActivity {
      **/
     private void setupPermissions() {
         // If we don't have the record audio permission...
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            // And if we're on SDK M or later...
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // Ask again, nicely, for the permissions.
-                String[] permissionsWeNeed = new String[]{ Manifest.permission.RECORD_AUDIO };
-                requestPermissions(permissionsWeNeed, MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE);
-            }
-        } else {
-            // Otherwise, permissions were granted and we are ready to go!
-            mAudioInputReader = new AudioInputReader(mVisualizerView, this);
-        }
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+//            // And if we're on SDK M or later...
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                // Ask again, nicely, for the permissions.
+//                String[] permissionsWeNeed = new String[]{ Manifest.permission.RECORD_AUDIO };
+//                requestPermissions(permissionsWeNeed, MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE);
+//            }
+//        } else {
+//            // Otherwise, permissions were granted and we are ready to go!
+//            mAudioInputReader = new AudioInputReader(mVisualizerView, this);
+//        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+                                           String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSION_RECORD_AUDIO_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
@@ -115,14 +117,22 @@ public class VisualizerActivity extends AppCompatActivity {
         }
     }
 
-    // TODO (1) Create a new Empty Activity named SettingsActivity; make sure to generate the
-    // activity_settings.xml layout file as well and add the activity to the manifest
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.vizualizer_menu, menu);
+        return true;
+    }
 
-    // TODO (2) Add a new resource folder called menu and create visualizer_menu.xml
-    // TODO (3) In visualizer_menu.xml create a menu item with a single item. The id should be
-    // action_settings, the id and title should be saved in strings.xml, the item should never
-    // be shown as an action, and orderInCategory should be 100
-
-    // TODO (5) Add the menu to the menu bar
-    // TODO (6) When the "Settings" menu item is pressed, open SettingsActivity
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case R.id.visualizer_menu_settings:
+                final Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
+    }
 }

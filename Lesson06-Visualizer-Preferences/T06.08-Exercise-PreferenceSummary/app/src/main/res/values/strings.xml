@@ -48,4 +48,19 @@
 
     <!-- Value in SharedPreferences for green color option -->
     <string name="pref_color_green_value" translatable="false">green</string>
+
+
+
+    <!-- Key name for storing size of a shapes in SharedPreferences -->
+    <string name="pref_size_key" translatable="false">size</string>
+
+    <!-- Label for storing size of a shapes in SharedPreferences -->
+    <string name="pref_size_label">Size of shapes multiplier</string>
+
+    <string name="pref_size_default_value" translatable="false">1</string>
+    <string name="pref_color_default_value" translatable="false">@string/pref_color_red_value</string>
+
+    <!-- Label for error message when user gives a value not in range [0..3] -->
+    <string name="visualizer_error_size_invalid_range">The size should be a number between 0 and 3</string>
+
 </resources>

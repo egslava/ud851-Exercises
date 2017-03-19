@@ -16,10 +16,14 @@
 
 package com.udacity.example.quizexample;
 
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.udacity.example.droidtermsprovider.DroidTermsExampleContract;
 
 /**
  * Gets the data from the ContentProvider and shows a series of flash cards.
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     // The current state of the app
     private int mCurrentState;
 
-    // TODO (3) Create an instance variable storing a Cursor called mData
+    // TODO (3) Create an instance variable storing a Cursor called mCursor
     private Button mButton;
 
     // This state is when the word definition is hidden and clicking the button will therefore
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     // This state is when the word definition is shown and clicking the button will therefore
     // advance the app to the next word
     private final int STATE_SHOWN = 1;
+    private Cursor mCursor;
+    private int mColumnIndexWord;
+    private int mColumnIndexDefinition;
 
 
     @Override
@@ -50,7 +57,25 @@ public class MainActivity extends AppCompatActivity {
         // Get the views
         mButton = (Button) findViewById(R.id.button_next);
 
-        // TODO (5) Create and execute your AsyncTask here
+        new WordsLoaderTasks().execute();
+    }
+
+    class WordsLoaderTasks extends AsyncTask<Void, Void, Cursor>{
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            return getContentResolver().query(DroidTermsExampleContract.CONTENT_URI, null, null, null, null);
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            super.onPostExecute(cursor);
+            mCursor = cursor;
+            mCursor.moveToPosition(mCursor.getCount() - 1);
+
+            mColumnIndexWord = mCursor.getColumnIndex(DroidTermsExampleContract.COLUMN_WORD);
+            mColumnIndexDefinition = mCursor.getColumnIndex(DroidTermsExampleContract.COLUMN_DEFINITION);
+            nextWord();
+        }
     }
 
     /**
@@ -74,25 +99,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void nextWord() {
 
-        // Change button text
-        mButton.setText(getString(R.string.show_definition));
+        // moving to the next word
+        int position = mCursor.getPosition();
+        if (position >= mCursor.getCount() - 1){
+            position = 0;
+        } else {
+            position = position + 1;
+        }
+        mCursor.moveToPosition(position);
+
+
+        // showing the word
+        final String stringWord = mCursor.getString(mColumnIndexWord);
+
+        mButton.setText(stringWord);
 
         mCurrentState = STATE_HIDDEN;
 
     }
 
+
     public void showDefinition() {
 
-        // Change button text
-        mButton.setText(getString(R.string.next_word));
+        final String stringDefinition = mCursor.getString(mColumnIndexDefinition);
+        mButton.setText(stringDefinition);
 
         mCurrentState = STATE_SHOWN;
 
     }
 
-    // TODO (1) Create AsyncTask with the following generic types <Void, Void, Cursor>
-    // TODO (2) In the doInBackground method, write the code to access the DroidTermsExample
-    // provider and return the Cursor object
-    // TODO (4) In the onPostExecute method, store the Cursor object in mData
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCursor.close();
+    }
 }

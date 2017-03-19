@@ -17,7 +17,6 @@ package android.example.com.visualizerpreferences.AudioVisuals;
  */
 
 import android.content.Context;
-import android.example.com.visualizerpreferences.R;
 import android.media.MediaPlayer;
 import android.media.audiofx.Visualizer;
 import android.os.Build;
@@ -43,7 +42,7 @@ public class AudioInputReader {
 
     private void initVisualizer() {
         // Setup media player
-        mPlayer = MediaPlayer.create(mContext, R.raw.htmlthesong);
+//        mPlayer = MediaPlayer.create(mContext, R.raw.htmlthesong);
         mPlayer.setLooping(true);
 
         // Setup the Visualizer
